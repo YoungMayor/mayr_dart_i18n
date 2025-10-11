@@ -1,6 +1,9 @@
-/// Support for doing something awesome.
+/// A Dart-based, JSON-powered internationalization (i18n) library.
 ///
-/// More dartdocs go here.
+/// Provides simplified translation management with CLI utilities for
+/// syncing and verifying language files.
 library;
 
-export 'src/mayr_i18n_base.dart';
+export 'src/core/i18n_manager.dart';
+export 'src/core/i18n_config.dart';
+export 'src/extensions/string_extension.dart';
