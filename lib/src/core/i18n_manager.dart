@@ -5,7 +5,25 @@ import 'i18n_config.dart';
 import 'i18n_loader.dart';
 import 'i18n_utils.dart';
 
-/// Singleton class for managing internationalization
+/// Singleton class for managing internationalization.
+///
+/// This is the main entry point for the mayr_i18n package. It handles:
+/// - Loading translation files from JSON
+/// - Switching between different locales
+/// - Translating keys with placeholder support
+/// - Managing configuration
+///
+/// Example usage:
+/// ```dart
+/// // Initialize
+/// await MayrI18n.instance.load();
+///
+/// // Translate
+/// print(MayrI18n.instance.tr('app.welcome', args: {'name': 'John'}));
+///
+/// // Change language
+/// MayrI18n.instance.changeLanguage('fr');
+/// ```
 class MayrI18n {
   static final MayrI18n instance = MayrI18n._internal();
 
@@ -26,7 +44,27 @@ class MayrI18n {
   /// Check if the manager is initialized
   bool get isInitialized => _isInitialized;
 
-  /// Load translations from the configured directory
+  /// Load translations from the configured directory.
+  ///
+  /// This method:
+  /// 1. Loads configuration from pubspec.yaml and optionally .env
+  /// 2. Loads all JSON translation files from the directory
+  /// 3. Sets the initial locale
+  ///
+  /// Parameters:
+  /// - [path]: Optional override for the translation directory path
+  /// - [locale]: Optional override for the initial locale
+  ///
+  /// Throws [Exception] if:
+  /// - The translation directory doesn't exist
+  /// - No translation files are found
+  /// - The specified locale doesn't exist
+  ///
+  /// Example:
+  /// ```dart
+  /// await MayrI18n.instance.load(); // Uses config defaults
+  /// await MayrI18n.instance.load(locale: 'fr'); // Start with French
+  /// ```
   Future<void> load({String? path, String? locale}) async {
     // Load configuration
     _config = await I18nConfig.load();
@@ -48,7 +86,24 @@ class MayrI18n {
     _isInitialized = true;
   }
 
-  /// Translate a key with optional arguments
+  /// Translate a key with optional arguments.
+  ///
+  /// Looks up the translation for [key] in the current locale and replaces
+  /// any placeholders with values from [args].
+  ///
+  /// Parameters:
+  /// - [key]: The translation key (e.g., 'app.welcome' or 'auth.errors.invalid')
+  /// - [args]: Optional map of placeholder replacements (e.g., {'name': 'John'})
+  ///
+  /// Returns the translated string, or the key itself if translation not found.
+  ///
+  /// Throws [Exception] if MayrI18n hasn't been initialized.
+  ///
+  /// Example:
+  /// ```dart
+  /// MayrI18n.instance.tr('app.welcome'); // "Welcome!"
+  /// MayrI18n.instance.tr('app.welcome', args: {'name': 'John'}); // "Welcome, John!"
+  /// ```
   String tr(String key, {Map<String, String>? args}) {
     if (!_isInitialized) {
       throw Exception('MayrI18n not initialized. Call load() first.');
@@ -63,7 +118,23 @@ class MayrI18n {
     return replacePlaceholders(translation, args);
   }
 
-  /// Change the current language
+  /// Change the current language.
+  ///
+  /// Switches the active locale to [locale]. All subsequent calls to [tr]
+  /// will use translations from the new locale.
+  ///
+  /// Parameters:
+  /// - [locale]: The locale code to switch to (e.g., 'en', 'fr', 'genz')
+  ///
+  /// Throws [Exception] if:
+  /// - MayrI18n hasn't been initialized
+  /// - The specified locale doesn't exist
+  ///
+  /// Example:
+  /// ```dart
+  /// MayrI18n.instance.changeLanguage('fr');
+  /// print('app.welcome'.tr()); // Now in French
+  /// ```
   void changeLanguage(String locale) {
     if (!_isInitialized) {
       throw Exception('MayrI18n not initialized. Call load() first.');
