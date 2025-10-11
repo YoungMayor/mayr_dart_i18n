@@ -1,0 +1,20 @@
+{
+  "app": {
+    "welcome": "Bienvenue, {name}!",
+    "logout": "Vous avez été déconnecté.",
+    "title": "Mon Application"
+  },
+  "auth": {
+    "login": "Connexion",
+    "register": "S'inscrire",
+    "errors": {
+      "invalid": "Identifiants invalides",
+      "network": "Erreur réseau"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "edit": "Modifier le profil",
+    "settings": "Paramètres"
+  }
+}
