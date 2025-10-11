@@ -2,6 +2,7 @@ import 'package:mayr_i18n/mayr_i18n.dart';
 
 /// Comprehensive example showing all features of mayr_i18n
 Future<void> main() async {
+  print("auth.register".tr());
   print('🌍 Comprehensive mayr_i18n Example\n');
   print('=' * 60);
 

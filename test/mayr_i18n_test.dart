@@ -133,6 +133,58 @@ void main() {
     });
   });
 
+  group('Audit scanner regex', () {
+    test('finds keys in .tr() and manager calls', () async {
+      // Simulate a Dart source file content
+      const source = '''
+        import 'package:mayr_i18n/mayr_i18n.dart';
+
+        void main() async {
+          await MayrI18n.instance.load();
+          print('app.welcome'.tr());
+          print("profile.title".tr());
+          print(MayrI18n.instance.tr('auth.login'));
+          print(MayrI18n.instance.tr("auth.errors.invalid", args: {"x": "y"}));
+        }
+      ''';
+
+      final found = <String>{};
+
+      // Patterns should match the ones used by the CLI audit
+      final p1 = RegExp(r"'([^']+)'\.tr\(");
+      final p2 = RegExp(r'"([^"]+)"\.tr\(');
+      final p3 = RegExp(r"MayrI18n\.instance\.tr\(\s*'([^']+)'\s*(,|\))");
+      final p4 = RegExp(r'MayrI18n\.instance\.tr\(\s*"([^"]+)"\s*(,|\))');
+
+      for (final m in p1.allMatches(source)) {
+        final k = m.group(1);
+        if (k != null) found.add(k);
+      }
+      for (final m in p2.allMatches(source)) {
+        final k = m.group(1);
+        if (k != null) found.add(k);
+      }
+      for (final m in p3.allMatches(source)) {
+        final k = m.group(1);
+        if (k != null) found.add(k);
+      }
+      for (final m in p4.allMatches(source)) {
+        final k = m.group(1);
+        if (k != null) found.add(k);
+      }
+
+      expect(
+        found,
+        containsAll({
+          'app.welcome',
+          'profile.title',
+          'auth.login',
+          'auth.errors.invalid',
+        }),
+      );
+    });
+  });
+
   group('String Extension Tests', () {
     test('should translate using .tr() extension', () async {
       await MayrI18n.instance.load();

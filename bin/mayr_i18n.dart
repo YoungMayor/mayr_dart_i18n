@@ -259,6 +259,32 @@ Future<void> _scanDirectory(Directory dir, Set<String> keys) async {
           keys.add(key);
         }
       }
+
+      // Detect direct manager calls: MayrI18n.instance.tr('key')
+      final patternManagerSingle = RegExp(
+        r"MayrI18n\.instance\.tr\(\s*'([^']+)'\s*(,|\))",
+      );
+      final matchesManagerSingle = patternManagerSingle.allMatches(content);
+
+      for (final match in matchesManagerSingle) {
+        final key = match.group(1);
+        if (key != null) {
+          keys.add(key);
+        }
+      }
+
+      // Detect direct manager calls with double quotes
+      final patternManagerDouble = RegExp(
+        r'MayrI18n\.instance\.tr\(\s*"([^"]+)"\s*(,|\))',
+      );
+      final matchesManagerDouble = patternManagerDouble.allMatches(content);
+
+      for (final match in matchesManagerDouble) {
+        final key = match.group(1);
+        if (key != null) {
+          keys.add(key);
+        }
+      }
     }
   }
 }
