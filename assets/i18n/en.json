@@ -1,0 +1,20 @@
+{
+  "app": {
+    "welcome": "Welcome, {name}!",
+    "logout": "You've been logged out.",
+    "title": "My Application"
+  },
+  "auth": {
+    "login": "Login",
+    "register": "Register",
+    "errors": {
+      "invalid": "Invalid credentials",
+      "network": "Network error"
+    }
+  },
+  "profile": {
+    "title": "Profile",
+    "edit": "Edit Profile",
+    "settings": "Settings"
+  }
+}

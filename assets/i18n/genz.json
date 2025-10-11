@@ -1,0 +1,20 @@
+{
+  "app": {
+    "welcome": "Yo {name}, what's good?",
+    "logout": "Catch you later!",
+    "title": "My App"
+  },
+  "auth": {
+    "login": "Sign In",
+    "register": "Sign Up",
+    "errors": {
+      "invalid": "Wrong login, bruh",
+      "network": "Can't connect, fam"
+    }
+  },
+  "profile": {
+    "title": "Your Profile",
+    "edit": "Edit Your Vibe",
+    "settings": "Settings"
+  }
+}
